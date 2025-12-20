@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documents Management System - ERD</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #6c757d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        #diagram {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+        }
+        .instructions h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .instructions p {
+            margin: 10px 0;
+            color: #495057;
+        }
+        .btn-download {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .btn-download:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-database"></i> Documents Management System - ERD</h1>
+        <p class="subtitle">Entity Relationship Diagram (ERD)</p>
+        
+        <div id="diagram">
+            <pre class="mermaid">
+erDiagram
+    Department ||--o{ Employee : "has"
+    Department ||--o{ Letter : "handles"
+    Employee ||--|| Users : "has account"
+    Employee ||--o{ Letter : "assigned to"
+    Employee ||--o{ password_resets : "can request"
+    Users ||--o{ ActivityLog : "performs"
+    Letter ||--o{ ActivityLog : "tracked by"
+    LetterMethod ||--o{ Letter : "used by"
+    LetterStatus ||--o{ Letter : "applies to"
+
+    Department {
+        int id PK
+        varchar name
+        varchar abbreviation
+    }
+
+    Employee {
+        int id PK
+        varchar name
+        varchar email UK
+        varchar password
+        int department_id FK
+        varchar role
+    }
+
+    Users {
+        int id PK
+        varchar username
+        varchar password
+        int employee_id FK
+        varchar role
+        varchar email
+    }
+
+    Letter {
+        int id PK
+        text subject
+        text content
+        varchar sender
+        varchar receiver
+        int method_id FK
+        date date_received
+        date date_sent
+        int department_id FK
+        int employee_id FK
+        varchar letter_number UK
+        int status_id FK
+    }
+
+    LetterMethod {
+        int id PK
+        varchar method_name
+    }
+
+    LetterStatus {
+        int id PK
+        varchar status_name
+    }
+
+    ActivityLog {
+        int id PK
+        int user_id FK
+        int letter_id FK "nullable"
+        varchar action
+        json old_values
+        json new_values
+        varchar ip_address
+        text user_agent
+        timestamp timestamp
+    }
+
+    password_resets {
+        int id PK
+        int employee_id FK
+        varchar token UK
+        datetime expires_at
+        datetime created_at
+    }
+            </pre>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 How to Save as Image:</h3>
+            <p><strong>Method 1 - Screenshot (Easiest):</strong></p>
+            <ul>
+                <li>Windows: Press <kbd>Win</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> to use Snipping Tool</li>
+                <li>Or right-click on the diagram and select "Save image as..."</li>
+            </ul>
+            
+            <p><strong>Method 2 - Browser DevTools:</strong></p>
+            <ol>
+                <li>Right-click on the diagram</li>
+                <li>Select "Inspect" or "Inspect Element"</li>
+                <li>Find the SVG element in the HTML</li>
+                <li>Right-click the SVG and save as image</li>
+            </ol>
+
+            <p><strong>Method 3 - Print to PDF:</strong></p>
+            <ul>
+                <li>Press <kbd>Ctrl</kbd> + <kbd>P</kbd></li>
+                <li>Choose "Save as PDF" as the printer</li>
+                <li>Save the PDF file</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p><strong>Database:</strong> office_letter | <strong>DBMS:</strong> MySQL/MariaDB | <strong>Normalization:</strong> 3NF</p>
+            <p>&copy; 2025 Office Letter Management System | Created and Developed By Group No-05</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            er: {
+                fontSize: 14,
+                useMaxWidth: true
+            }
+        });
+    </script>
+</body>
+</html>
