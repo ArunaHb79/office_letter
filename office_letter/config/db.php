@@ -2,7 +2,7 @@
 // Application name central constant
 define('APP_NAME', 'Documents Management System');
 
-// Set timezone for Sri Lanka (adjust to your timezone if needed)
+// Set timezone for Sri Lanka 
 date_default_timezone_set('Asia/Colombo');
 
 // Database configuration
@@ -21,4 +21,5 @@ $conn->set_charset("utf8mb4");
 
 // Set MySQL timezone to match PHP timezone
 $conn->query("SET time_zone = '+05:30'");
+
 ?>
